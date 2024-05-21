@@ -16,7 +16,6 @@ export class userController{
 
     @httpPost('/InsertData')
     async userData(req: Request, res: Response,next: NextFunction):Promise<void>{
-        console.log(req.params.id);
         try{
             const {name,email,password,profile_info} = req.body;
             const body : userInterface = {name,email,password,profile_info}
