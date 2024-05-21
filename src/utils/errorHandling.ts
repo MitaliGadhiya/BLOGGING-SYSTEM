@@ -20,6 +20,10 @@ export const errorMessage = (err: any, req:Request, res: Response, next:NextFunc
                 statusCode = STATUS_CODE.INTERNAL_SERVER_ERROR
             break
             
+            case 'TypeError':
+                error = "type error";
+                statusCode = STATUS_CODE.BAD_REQUEST
+            break
 
             case 'SyntaxError':
             error = 'Unexpected Syntax'

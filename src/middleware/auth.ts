@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import { BaseMiddleware } from 'inversify-express-utils'
 import dotenv from 'dotenv'
+import { userModel } from '../models'
 
 dotenv.config()
 const secretkey = process.env.SECRETKEY || ''
@@ -20,6 +21,10 @@ export class Auth extends BaseMiddleware {
         res.status(403).send('Forbidden')
         return
       }
+      const user = userModel.find({email :decoded.email})
+      if(!user){
+        throw new Error("User Not Exists")
+      }
       req.find = decoded // Assuming the decoded token contains user information
       next()
     })
@@ -27,3 +32,5 @@ export class Auth extends BaseMiddleware {
 }
 
 
+let a = 5
+a = 6
