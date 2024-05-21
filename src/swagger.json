@@ -1,0 +1,63 @@
+{
+    "openapi": "3.0.0",
+    "info":{
+        "title" : "BLOG SYSTEM",
+        "version" : "1.1.0",
+        "description": "this is blog system"
+    },
+
+    "servers" :[
+        {
+            "url": "http://localhost:3000",
+            "description": "local server"
+        }
+    ],
+    "paths":{
+        "/user/InsertData":{
+            "post":{
+                "tags": [
+                    "user"
+                ],
+                "summary" : "Insert user data",
+                "responses": {
+                    "200":{
+                        "description":"user successfully registered"
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string"
+                            },
+                            "email": {
+                              "type": "string",
+                              "format": "email"
+                            },
+                            "password": {
+                              "type": "string"
+                            },
+                            "profile_info": {
+                              "type": "string"
+                            }
+                          },
+                          "required": ["name", "email", "password", "role"]
+                        }
+                      }
+                    }
+                }
+            }
+        }   
+    },
+    "components":{
+        "securityScheme" : {
+            "Auth" : {
+                "type": "http",
+                "scheme": "bearer"
+            }
+        }
+    }
+}
