@@ -1,34 +1,33 @@
-import { Schema,model } from "mongoose";
-import { commentInterface } from "../interface";
-import { timeStamp } from "console";
+import { Schema, model } from 'mongoose'
+import { commentInterface } from '../interface'
 
 
-const commentSchema = new Schema<commentInterface>({
-    content:{
-        type: String,
-        required: true
+const commentSchema = new Schema<commentInterface>(
+  {
+    content: {
+      type: String,
+      required: true
     },
-    userID:{
-        type: Schema.Types.ObjectId,
-        ref: 'userInterface',
-        required: true
+    userID: {
+      type: Schema.Types.ObjectId,
+      ref: 'userInterface',
+      required: true
     },
-    blogpostID:{
-        type: Schema.Types.ObjectId,
-        required: true,
-        ref: 'blogpostInterface'
+    blogpostID: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: 'blogpostInterface'
     },
-    likes:{
-        type: Number,
-        required: true
+    likes: { 
+      type: Number,
+      required: true
     },
-    dislike:{
-        type: Number,
-        required: true
+    dislike: {
+      type: Number,
+      required: true
     }
+  },
+  { timestamps: true }
+)
 
-},{timestamps:true})
-
-export const commentModel = model<commentInterface>('comment',commentSchema)
-
-
+export const commentModel = model<commentInterface>('comment', commentSchema)

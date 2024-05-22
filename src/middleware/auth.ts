@@ -21,16 +21,13 @@ export class Auth extends BaseMiddleware {
         res.status(403).send('Forbidden')
         return
       }
-      const user = userModel.find({email :decoded.email})
-      if(!user){
-        throw new Error("User Not Exists")
+      const user = userModel.find({ email: decoded.email })
+      if (!user) {
+        throw new Error('User Not Exists')
       }
+      console.log(req.find)
       req.find = decoded // Assuming the decoded token contains user information
       next()
     })
   }
 }
-
-
-let a = 5
-a = 6

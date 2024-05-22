@@ -1,63 +1,304 @@
 {
-    "openapi": "3.0.0",
-    "info":{
-        "title" : "BLOG SYSTEM",
-        "version" : "1.1.0",
-        "description": "this is blog system"
-    },
+  "openapi": "3.0.0",
+  "info": {
+    "title": "BLOG SYSTEM",
+    "version": "1.1.0",
+    "description": "this is blog system"
+  },
 
-    "servers" :[
-        {
-            "url": "http://localhost:3000",
-            "description": "local server"
-        }
-    ],
-    "paths":{
-        "/user/InsertData":{
-            "post":{
-                "tags": [
-                    "user"
-                ],
-                "summary" : "Insert user data",
-                "responses": {
-                    "200":{
-                        "description":"user successfully registered"
-                    }
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "local server"
+    }
+  ],
+  "paths": {
+    "/user/InsertData": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Insert user data",
+        "responses": {
+          "200": {
+            "description": "user successfully registered"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "profile_info": {
+                    "type": "string"
+                  }
                 },
-                "requestBody": {
-                    "content": {
-                      "application/json": {
-                        "schema": {
-                          "type": "object",
-                          "properties": {
-                            "name": {
-                              "type": "string"
-                            },
-                            "email": {
-                              "type": "string",
-                              "format": "email"
-                            },
-                            "password": {
-                              "type": "string"
-                            },
-                            "profile_info": {
-                              "type": "string"
-                            }
-                          },
-                          "required": ["name", "email", "password", "role"]
-                        }
-                      }
+                "required": ["name", "email", "password", "role"]
+              },
+              "examples": {
+                "Registration": {
+                    "value": {
+                        "name": "Mitali",
+                        "email": "mitali@gmail.com",
+                        "password": "1234",
+                        "profile_info": "admin"
                     }
                 }
             }
-        }   
-    },
-    "components":{
-        "securityScheme" : {
-            "Auth" : {
-                "type": "http",
-                "scheme": "bearer"
             }
+          }
         }
+      }
+    },
+    "/user/login": {
+      "post": {
+        "tags": ["User"],
+        "summary": "login user data",
+        "responses": {
+          "200": {
+            "description": "user successfully login"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string"
+                  } 
+                },
+                "required": ["email", "password"]
+              },
+              "examples": {
+                "Login": {
+                    "value": {
+                        "email": "mitali@gmail.com",
+                        "password": "mitali123"
+                    }
+                }
+            }
+            }
+          }
+        }
+      }
+    },
+    "/user/UpdateData": {
+      "post": {
+        "tags": ["User"],
+        "summary": "update user data",
+        "responses": {
+          "200": {
+            "description": "user successfully data Updated"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "profile_info": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/DeleteData": {
+      "post": {
+        "tags": ["User"],
+        "summary": "delete user data",
+        "responses": {
+          "200": {
+            "description": "user successfully data Deleted"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/FindUser": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Find user data",
+        "responses": {
+          "200": {
+            "description": "user data here"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/blogpost/InsertData": {
+      "post": {
+        "tags": ["Blog"],
+        "summary": "Insert blog data",
+        "responses": {
+          "200": {
+            "description": "Insert blog Successfully"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "content":{
+                    "type": "string"
+                  },
+                  "userID":{
+                    "type" :"string"
+                  },
+                  "likes":{
+                    "type" : "number"
+                  },
+                  "dislikes":{
+                    "type": "number"
+                  }
+                },
+                "required":["title","content","userID","likes","dislikes"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/blogpost/UpdateBlog": {
+      "post": {
+        "tags": ["Blog"],
+        "summary": "Update blog data",
+        "responses": {
+          "200": {
+            "description": "Blog Successfully Updated"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "_id":{
+                    "type":"string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "content":{
+                    "type": "string"
+                  },
+                  "userID":{
+                    "type" :"string"
+                  },
+                  "likes":{
+                    "type" : "number"
+                  },
+                  "dislikes":{
+                    "type": "number"
+                  }
+                },
+                "required":["_id","userID"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/blogpost/DeleteBlog": {
+      "post": {
+        "tags": ["Blog"],
+        "summary": "delete blog data",
+        "responses": {
+          "200": {
+            "description": "user successfully blog data Deleted"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string"
+                  },
+                  "userID":{
+                    "type":"string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "securityScheme": {
+        "Auth": {
+          "type": "http",
+          "scheme": "bearer"
+        }
+      }
     }
+  }
 }
