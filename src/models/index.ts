@@ -1,3 +1,3 @@
-export { userModel } from './userModel'
-export { blogpostModel } from './blogpostModel'
-export { commentModel } from './commentModel'
+export { UserModel } from './userModel'
+export { BlogpostModel } from './blogpostModel'
+export { CommentModel } from './commentModel'

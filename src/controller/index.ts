@@ -1,3 +1,3 @@
-export { userController } from './userController'
-export { blogpostController } from './blogpostController'
-export { commentController } from './commentController'
+export { UserController } from './userController'
+export { BlogpostController } from './blogpostController'
+export { CommentController } from './commentController'

@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose'
-import { blogpostInterface } from '../interface'
+import { BlogpostInterface } from '../interface'
 
-const blogpostSchema = new Schema<blogpostInterface>(
+const blogpostSchema = new Schema<BlogpostInterface>(
   {
     title: {
       type: String,
@@ -23,12 +23,17 @@ const blogpostSchema = new Schema<blogpostInterface>(
     dislikes: {
       type: Number,
       required: true
+    },
+    isdeleted: {
+      type : Boolean,
+      default: false,
+      required: true
     }
   },
   { timestamps: true }
 )
 
-export const blogpostModel = model<blogpostInterface>(
+export const BlogpostModel = model<BlogpostInterface>(
   'blogpost',
   blogpostSchema
 )

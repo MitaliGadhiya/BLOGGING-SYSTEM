@@ -1,3 +1,3 @@
-export { userServices } from './userServices'
-export { blogpostServices } from './blogpostServices'
-export { commentServices } from './commentServices'
+export { UserServices } from './userServices'
+export { BlogpostServices } from './blogpostServices'
+export { CommentServices } from './commentServices'

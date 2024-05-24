@@ -1,8 +1,8 @@
 import { Schema, model } from 'mongoose'
-import { commentInterface } from '../interface'
+import { CommentInterface } from '../interface'
 
 
-const commentSchema = new Schema<commentInterface>(
+const commentSchema = new Schema<CommentInterface>(
   {
     content: {
       type: String,
@@ -25,9 +25,14 @@ const commentSchema = new Schema<commentInterface>(
     dislike: {
       type: Number,
       required: true
+    },
+    isdeleted: {
+      type: Boolean,
+      default: false,
+      required: true
     }
   },
   { timestamps: true }
 )
 
-export const commentModel = model<commentInterface>('comment', commentSchema)
+export const CommentModel = model<CommentInterface>('comment', commentSchema)

@@ -1,16 +1,16 @@
 import { Request, Response } from 'express'
-import { userModel } from '../models'
+import { UserModel } from '../models'
 import { injectable } from 'inversify'
-import { userInterface } from '../interface'
+import { UserInterface } from '../interface'
 
 @injectable()
-export class userQuery {
+export class UserQuery {
   async findAll(
     filters: string | undefined,
     search: string | undefined,
     page: number = 1,
     limit: number = 10
-  ): Promise<{ users: userInterface[]; total_pages: number }> {
+  ): Promise<{ users: UserInterface[]; total_pages: number }> {
     const filter: any = {}
     const pipeline: any[] = []
 
@@ -43,10 +43,10 @@ export class userQuery {
     pipeline.push({ $skip: (page - 1) * limit })
 
     // Execute the aggregation pipeline
-    const users = await userModel.aggregate(pipeline)
+    const users = await UserModel.aggregate(pipeline)
 
     // Count total documents for pagination
-    const totalCount = await userModel.countDocuments(filter)
+    const totalCount = await UserModel.countDocuments(filter)
     const total_pages = Math.ceil(totalCount / limit)
 
     return { users, total_pages }

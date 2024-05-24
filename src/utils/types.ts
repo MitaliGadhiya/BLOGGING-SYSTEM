@@ -1,16 +1,16 @@
 export const TYPES = {
   //user
-  userQuery: Symbol.for('userQuery'),
-  userServices: Symbol.for('userServices'),
-  userController: Symbol.for('userController'),
+  UserQuery: Symbol.for('UserQuery'),
+  UserServices: Symbol.for('UserServices'),
+  UserController: Symbol.for('UserController'),
 
   //blog post
-  blogpostQuery: Symbol.for('blogpostQuery'),
-  blogpostServices: Symbol.for('blogpostServices'),
-  blogpostController: Symbol.for('blogpostController'),
+  BlogpostQuery: Symbol.for('BlogpostQuery'),
+  BlogpostServices: Symbol.for('BlogpostServices'),
+  BlogpostController: Symbol.for('BlogpostController'),
 
   //comment
-  commentQuery: Symbol.for('commentQuery'),
-  commentServices: Symbol.for('commentServices'),
-  commentController: Symbol.for('commentController')
+  CommentQuery: Symbol.for('CommentQuery'),
+  CommentServices: Symbol.for('CommentServices'),
+  CommentController: Symbol.for('CommentController')
 }

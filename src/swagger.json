@@ -160,29 +160,54 @@
         }
       }
     },
-    "/user/FindUser": {
-      "post": {
+    "/user/FindUser/{_id}": {
+      "get": {
         "tags": ["User"],
         "summary": "Find user data",
         "responses": {
           "200": {
             "description": "user data here"
-          }
+          } 
         },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "_id": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID criteria"
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Filter criteria"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Search keyword"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "default": 1,
+            "description": "Page number for pagination"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "default": 10,
+            "description": "Number of items per page"
           }
-        }
+        ]
       }
     },
     "/blogpost/InsertData": {
@@ -290,6 +315,57 @@
             }
           }
         }
+      }
+    },
+    "/blogpost/FindBlog/{_id}": {
+      "get": {
+        "tags": ["Blog"],
+        "summary": "Find blog data",
+        "responses": {
+          "200": {
+            "description": "user successfully find blog data"
+          }
+        },
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID criteria"
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Filter criteria"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Search keyword"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "default": 1,
+            "description": "Page number for pagination"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "default": 10,
+            "description": "Number of items per page"
+          }
+        ]
+        
       }
     },
     "components": {

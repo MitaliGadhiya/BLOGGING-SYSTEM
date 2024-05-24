@@ -1,3 +1,3 @@
-export { userInterface } from './userInterface'
-export { blogpostInterface } from './blogpostInterface'
-export { commentInterface } from './commentInterface'
+export { UserInterface } from './userInterface'
+export { BlogpostInterface } from './blogpostInterface'
+export { CommentInterface } from './commentInterface'

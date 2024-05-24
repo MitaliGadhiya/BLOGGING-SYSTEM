@@ -1,20 +1,26 @@
-import { blogpostServices } from '../services'
+import { BlogpostServices } from '../services'
 import { NextFunction, Request, Response } from 'express'
-import { controller, httpPost } from 'inversify-express-utils'
+import { controller, httpGet, httpPost } from 'inversify-express-utils'
 import { inject } from 'inversify'
 import { TYPES } from '../utils/types'
 import errorMessage from '../utils/errorHandling'
-import { blogpostInterface } from '../interface'
+import { BlogpostInterface } from '../interface'
 import { Auth } from '../middleware/auth'
-import { blogpostModel } from '../models'
+import { BlogpostQuery } from '../query'
+
 
 @controller('/blogpost')
-export class blogpostController {
-  private blogpostService: blogpostServices
+export class BlogpostController {
+  private blogpostService: BlogpostServices
+  private blogpostQuery: BlogpostQuery
+
+
   constructor(
-    @inject(TYPES.blogpostServices) blogpostServices: blogpostServices
+    @inject(TYPES.BlogpostServices) blogpostServices: BlogpostServices,
+    @inject(TYPES.BlogpostQuery) BlogpostQuery: BlogpostQuery
   ) {
     this.blogpostService = blogpostServices
+    this.blogpostQuery = BlogpostQuery
   }
 
   @httpPost('/InsertData', Auth)
@@ -25,14 +31,16 @@ export class blogpostController {
   ): Promise<void> {    
     try {
       const blog: any = req.find
-      const { title, content, userID, likes, dislikes } = req.body
+      const { title, content, likes, dislikes, isdeleted } = req.body
+      const userID = blog._id
       if (blog._id === userID && (blog.role === 'admin' || blog.role === "author")) {
-        const body: blogpostInterface = {
+        const body: BlogpostInterface = {
           title,
           content,
           userID,
           likes,
-          dislikes
+          dislikes,
+          isdeleted
         }
         await this.blogpostService.blogData(body)
         res.send('BLOG SUCCESSFULLY REGISTERED')
@@ -48,45 +56,62 @@ export class blogpostController {
   async updateBlog(req:Request, res:Response, next:NextFunction){
     try{
         const update:any = req.find
-        const {_id, userID,updateBlog} =req.body
-        if(update._id === userID && (update.role === "admin" || update.role === "author")){
-            const result = await blogpostModel.findOne({_id: update._id , userID : userID })
-            if(result){
-                await this.blogpostService.updateBlog(_id,updateBlog)
-                res.send("BLOG SUCCESSFULLY UPDATED")
-            }else{
-                res.send("You cannot update other's post")
-            }
-        }
-        else{
-            res.send("ONLY ADMIN AND AUTHOR ARE UPDATED BLOG")
-        }
+        const {_id,...updateBlog} =req.body
+        const result = await this.blogpostService.updateBlog(_id,update,updateBlog)
+        res.send(result)
+        return
     }catch(err){
         errorMessage(err,req,res,next)
     }    
   }
 
   
-  @httpPost("/DeleteBlog")
+  @httpPost("/DeleteBlog",Auth)
   async deleteBlog(req:Request,res:Response, next:NextFunction){
     try{
         const delete1:any = req.find
-        const {_id,userID} = req.body
-        if(delete1._id === userID &&(delete1.role === "admin" || delete1.role === "author")){
-            const result = await blogpostModel.findOne({_id: delete1._id , userID : userID })
-            if(result){
-                await this.blogpostService.deleteBlog(_id)
-                res.send("BLOG SUCCESFULLY DELETED")
-            }else{
-                res.send("You cannot delete other's post")
-            }
-        }
-        else{
-            res.send("ONLY AUTHOR AND AUTHOR ARE UPDATED BLOG")
-        }
+        const {_id} = req.body
+        const result = await this.blogpostService.deleteBlog(_id,delete1)
+        res.send(result)
     }
     catch(err){
+      console.log(err);
         errorMessage(err,req,res,next)
+    }
+  }
+
+
+  @httpGet('/FindBlog/:id',Auth)
+  async findAll(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const find: any = req.find
+      const { _id } = req.params
+      if (find._id === _id) {
+       const users =  await this.blogpostService.findAll(_id)
+       res.json({users})
+      }else if(find.role === "admin"){
+        const { filter, search, page = 1, limit = 10 } = req.query
+        const { blog , total_pages } = await this.blogpostQuery.findAll(
+          filter as string,
+          search as string,
+          +page,
+          +limit
+        )
+        res.json({
+          total_pages,
+          current_page: page,
+          blog
+        })
+      }else{
+        res.send("Wrong user ID")
+      }
+    } catch (err) {
+      console.log(err);
+      errorMessage(err, req, res, next)
     }
   }
 }

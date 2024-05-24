@@ -1,3 +1,3 @@
-export { userQuery } from './userQuery'
-// export {blogpostQuery} from './blogpostQuery'
+export { UserQuery } from './userQuery'
+export {BlogpostQuery} from './blogpostQuery'
 // export {commentQuery} from './commentQuery'

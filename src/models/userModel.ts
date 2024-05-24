@@ -1,7 +1,8 @@
 import { Schema, model } from 'mongoose'
-import { userInterface } from '../interface'
+import { UserInterface } from '../interface'
 
-const userSchema = new Schema<userInterface>(
+
+const userSchema = new Schema<UserInterface>(
   {
     name: {
       type: String,
@@ -19,9 +20,14 @@ const userSchema = new Schema<userInterface>(
     profile_info: {
       type: String,
       required: true
+    },
+    isdeleted: {
+      type: Boolean,
+      default: false,
+      required: true
     }
   },
   { timestamps: true }
 )
 
-export const userModel = model<userInterface>('users', userSchema)
+export const UserModel = model<UserInterface>('users', userSchema)

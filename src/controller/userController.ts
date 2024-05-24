@@ -1,22 +1,22 @@
-import { userServices } from '../services'
-import { userQuery } from '../query'
+import { UserServices } from '../services'
+import { UserQuery } from '../query'
 import { NextFunction, Request, Response } from 'express'
 import { controller, httpGet, httpPost } from 'inversify-express-utils'
 import { inject } from 'inversify'
 import { TYPES } from '../utils/types'
 import errorMessage from '../utils/errorHandling'
-import { userInterface } from '../interface'
+import { UserInterface } from '../interface'
 import { STATUS_CODE, SUCCESS_MESSAGE, NOT_FOUND } from '../utils/constant'
 import { Auth } from '../middleware/auth'
-import { userModel } from '../models'
+import { UserModel } from '../models'
 
 @controller('/user')
-export class userController {
-  private userService: userServices
-  private userQuery: userQuery
+export class UserController {
+  private userService: UserServices
+  private userQuery: UserQuery
   constructor(
-    @inject(TYPES.userServices) userServices: userServices,
-    @inject(TYPES.userQuery) userQuery: userQuery
+    @inject(TYPES.UserServices) userServices: UserServices,
+    @inject(TYPES.UserQuery) userQuery: UserQuery
   ) {
     this.userService = userServices
     this.userQuery = userQuery
@@ -29,11 +29,12 @@ export class userController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const { name, email, password, profile_info } = req.body
-      const body: userInterface = { name, email, password, profile_info }
+      const { name, email, password, profile_info, isdeleted } = req.body
+      const body: UserInterface = { name, email, password, profile_info, isdeleted }
       await this.userService.userData(body)
       res.send('USER SUCCESSFULLY REGISTERED')
     } catch (err) {
+      console.log(err)
       errorMessage(err, req, res, next)
     }
   }
@@ -62,12 +63,15 @@ export class userController {
   ): Promise<void> {
     try {
       const update: any = req.find
-      const { _id, updateData } = req.body
+      const { _id, ...updateData } = req.body
       if (update._id === _id) {
-        await this.userService.updateData(_id, updateData)
-        res.send('DATA UPDATED')
+        const result= await this.userService.updateData(_id,updateData)
+        res.send(result)
+        return
       } else {
         res.send('your ID is Wrong')
+        return
+      
       }
     } catch (err) {
       errorMessage(err, req, res, next)
@@ -94,7 +98,7 @@ export class userController {
     }
   }
 
-  @httpPost('/FindUser',Auth)
+  @httpGet('/FindUser/:id',Auth)
   async findAll(
     req: Request,
     res: Response,
@@ -102,9 +106,9 @@ export class userController {
   ): Promise<void> {
     try {
       const find: any = req.find
-      const { _id } = req.body
+      const { _id } = req.params
       if (find._id === _id) {
-       const users =  await userModel.findOne({_id})
+       const users =  await this.userService.findAll(_id)
        res.json({users})
       }else if(find.role === "admin"){
         const { filter, search, page = 1, limit = 10 } = req.query

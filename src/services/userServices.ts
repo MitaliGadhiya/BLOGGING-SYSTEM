@@ -1,5 +1,5 @@
-import { userInterface } from '../interface'
-import { userModel } from '../models'
+import { UserInterface } from '../interface'
+import { UserModel } from '../models'
 import jwt from 'jsonwebtoken'
 import { injectable } from 'inversify'
 import dotenv from 'dotenv'
@@ -8,15 +8,15 @@ dotenv.config()
 const secretkey = process.env.SECRETKEY || ''
 
 @injectable()
-export class userServices {
-  async userData(body: userInterface): Promise<void> {
+export class UserServices {
+  async userData(body: UserInterface): Promise<void> {
     const { name, email, password, profile_info } = body
-    const newUser = new userModel({ name, email, password, profile_info })
+    const newUser = new UserModel({ name, email, password, profile_info })
     await newUser.save()
   }
 
   async login(email: string, password: string): Promise<String> {
-    const user = await userModel.findOne({ email, password })
+    const user = await UserModel.findOne({ email, password })
     if (user) {
       const role = user.profile_info
       const _id = user._id
@@ -31,12 +31,25 @@ export class userServices {
 
   async updateData(
     _id: string,
-    updateData: Partial<userInterface>
-  ): Promise<void> {
-    await userModel.findByIdAndUpdate(_id, updateData, { new: true })
+    updateData: Partial<UserInterface>
+  ): Promise<UserInterface|object> {
+    const result = await UserModel.findOne({_id: _id, isdeleted: true})
+        if(result){
+          const message={"message":"this user already deleted"}
+          return message
+        }else{
+          const updatedObject=await UserModel.findByIdAndUpdate(_id, updateData, { new: true })
+          return updatedObject
+        }
+  } 
+
+  async deleteData(_id: string): Promise<void> { 
+    await UserModel.findByIdAndUpdate(_id,{isdeleted:true})
   }
 
-  async deleteData(_id: string): Promise<void> {
-    await userModel.findByIdAndUpdate(_id)
+
+  async findAll(_id: string): Promise<void |object>{
+    const find = await UserModel.findOne({_id : _id})
+    return find
   }
 }
