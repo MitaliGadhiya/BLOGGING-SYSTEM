@@ -9,8 +9,8 @@ import { Auth } from '../middleware/auth'
 const container = new Container()
 
 //query
-for(const i in query){
-  const Query = query[i];
+for (const i in query) {
+  const Query = query[i]
   container.bind<typeof Query>(TYPES[Query.name]).to(Query)
 }
 

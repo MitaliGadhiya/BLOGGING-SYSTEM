@@ -1,7 +1,7 @@
-import { CommentModel } from '../models';
-import { injectable } from 'inversify';
-import { CommentInterface } from '../interface';
-import { PipelineStage } from 'mongoose';
+import { CommentModel } from '../models'
+import { injectable } from 'inversify'
+import { CommentInterface } from '../interface'
+import { PipelineStage } from 'mongoose'
 
 @injectable()
 export class CommentQuery {
@@ -11,7 +11,7 @@ export class CommentQuery {
     page: number = 1,
     limit: number = 10
   ): Promise<{ comment: CommentInterface[]; total_pages: number }> {
-    const filter: any = {};
+    const filter: any = {}
 
     // Define initial aggregation stages to add necessary fields
     const aggregationStages: PipelineStage[] = [
@@ -54,11 +54,11 @@ export class CommentQuery {
           blogDislikes: { $ifNull: ['$blog_comment.dislikes', 0] }
         }
       }
-    ];
+    ]
 
     // Construct the filter based on search criteria after fields are added
     if (search) {
-      const searchNumber = parseInt(search, 10);
+      const searchNumber = parseInt(search, 10)
       if (!isNaN(searchNumber)) {
         filter.$or = [
           { content: { $regex: search, $options: 'i' } },
@@ -71,7 +71,7 @@ export class CommentQuery {
           { dislikes: searchNumber },
           { blogLikes: searchNumber },
           { blogDislikes: searchNumber }
-        ];
+        ]
       } else {
         filter.$or = [
           { content: { $regex: search, $options: 'i' } },
@@ -80,21 +80,21 @@ export class CommentQuery {
           { userProfile: { $regex: search, $options: 'i' } },
           { blogTitle: { $regex: search, $options: 'i' } },
           { blogContent: { $regex: search, $options: 'i' } }
-        ];
+        ]
       }
     }
 
     // Parse and apply additional filters
     if (filters) {
-      const filterPairs = filters.split('&');
+      const filterPairs = filters.split('&')
       filterPairs.forEach(pair => {
-        const [key, value] = pair.split('=');
+        const [key, value] = pair.split('=')
         if (value !== undefined) {
-          filter[key] = value;
+          filter[key] = value
         } else {
-          throw new Error('Invalid key-value pair');
+          throw new Error('Invalid key-value pair')
         }
-      });
+      })
     }
 
     // Add match, skip, and limit stages to the aggregation pipeline
@@ -116,15 +116,15 @@ export class CommentQuery {
       },
       { $skip: (page - 1) * limit },
       { $limit: limit }
-    );
+    )
 
     // Execute the aggregation pipeline
-    const comments = await CommentModel.aggregate(aggregationStages);
+    const comments = await CommentModel.aggregate(aggregationStages)
 
     // Count total documents for pagination
-    const totalCount = await CommentModel.countDocuments(filter);
-    const total_pages = Math.ceil(totalCount / limit);
+    const totalCount = await CommentModel.countDocuments(filter)
+    const total_pages = Math.ceil(totalCount / limit)
 
-    return { comment: comments, total_pages };
+    return { comment: comments, total_pages }
   }
 }

@@ -22,7 +22,7 @@ export class UserController {
     this.userQuery = userQuery
   }
 
-  @httpPost('/InsertData',validateData)
+  @httpPost('/InsertData', validateData)
   async userData(
     req: Request,
     res: Response,
@@ -30,7 +30,13 @@ export class UserController {
   ): Promise<void> {
     try {
       const { name, email, password, profile_info, isdeleted } = req.body
-      const body: UserInterface = { name, email, password, profile_info, isdeleted }
+      const body: UserInterface = {
+        name,
+        email,
+        password,
+        profile_info,
+        isdeleted
+      }
       await this.userService.userData(body)
       res.send('USER SUCCESSFULLY REGISTERED')
     } catch (err) {
@@ -65,13 +71,12 @@ export class UserController {
       const update: any = req.find
       const { _id, ...updateData } = req.body
       if (update._id === _id) {
-        const result= await this.userService.updateData(_id,updateData)
+        const result = await this.userService.updateData(_id, updateData)
         res.send(result)
         return
       } else {
         res.send('your ID is Wrong')
         return
-      
       }
     } catch (err) {
       errorMessage(err, req, res, next)
@@ -98,7 +103,7 @@ export class UserController {
     }
   }
 
-  @httpGet('/FindUser/:id',Auth)
+  @httpGet('/FindUser/:id', Auth)
   async findAll(
     req: Request,
     res: Response,
@@ -108,9 +113,9 @@ export class UserController {
       const find: any = req.find
       const { _id } = req.params
       if (find._id === _id) {
-       const users =  await this.userService.findAll(_id)
-       res.json({users})
-      }else if(find.role === "admin"){
+        const users = await this.userService.findAll(_id)
+        res.json({ users })
+      } else if (find.role === 'admin') {
         const { filter, search, page = 1, limit = 10 } = req.query
         const { users, total_pages } = await this.userQuery.findAll(
           filter as string,
@@ -123,8 +128,8 @@ export class UserController {
           current_page: page,
           users
         })
-      }else{
-        res.send("Wrong user ID")
+      } else {
+        res.send('Wrong user ID')
       }
     } catch (err) {
       errorMessage(err, req, res, next)

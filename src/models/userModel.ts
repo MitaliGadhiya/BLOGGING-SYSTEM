@@ -1,7 +1,6 @@
 import { Schema, model } from 'mongoose'
 import { UserInterface } from '../interface'
 
-
 const userSchema = new Schema<UserInterface>(
   {
     name: {

@@ -32,24 +32,25 @@ export class UserServices {
   async updateData(
     _id: string,
     updateData: Partial<UserInterface>
-  ): Promise<UserInterface|object> {
-    const result = await UserModel.findOne({_id: _id, isdeleted: true})
-        if(result){
-          const message={"message":"this user already deleted"}
-          return message
-        }else{
-          const updatedObject=await UserModel.findByIdAndUpdate(_id, updateData, { new: true })
-          return updatedObject
-        }
-  } 
-
-  async deleteData(_id: string): Promise<void> { 
-    await UserModel.findByIdAndUpdate(_id,{isdeleted:true})
+  ): Promise<UserInterface | object> {
+    const result = await UserModel.findOne({ _id: _id, isdeleted: true })
+    if (result) {
+      const message = { message: 'this user already deleted' }
+      return message
+    } else {
+      const updatedObject = await UserModel.findByIdAndUpdate(_id, updateData, {
+        new: true
+      })
+      return updatedObject
+    }
   }
 
+  async deleteData(_id: string): Promise<void> {
+    await UserModel.findByIdAndUpdate(_id, { isdeleted: true })
+  }
 
-  async findAll(_id: string): Promise<void |object>{
-    const find = await UserModel.findOne({_id : _id})
+  async findAll(_id: string): Promise<void | object> {
+    const find = await UserModel.findOne({ _id: _id })
     return find
   }
 }

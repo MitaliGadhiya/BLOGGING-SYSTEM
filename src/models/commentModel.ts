@@ -1,7 +1,6 @@
 import { Schema, model } from 'mongoose'
 import { CommentInterface } from '../interface'
 
-
 const commentSchema = new Schema<CommentInterface>(
   {
     content: {
@@ -18,7 +17,7 @@ const commentSchema = new Schema<CommentInterface>(
       required: true,
       ref: 'blogpostInterface'
     },
-    likes: { 
+    likes: {
       type: Number,
       required: true
     },

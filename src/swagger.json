@@ -46,14 +46,14 @@
               },
               "examples": {
                 "Registration": {
-                    "value": {
-                        "name": "Mitali",
-                        "email": "mitali@gmail.com",
-                        "password": "1234",
-                        "profile_info": "admin"
-                    }
+                  "value": {
+                    "name": "Mitali",
+                    "email": "mitali@gmail.com",
+                    "password": "1234",
+                    "profile_info": "admin"
+                  }
                 }
-            }
+              }
             }
           }
         }
@@ -80,18 +80,18 @@
                   },
                   "password": {
                     "type": "string"
-                  } 
+                  }
                 },
                 "required": ["email", "password"]
               },
               "examples": {
                 "Login": {
-                    "value": {
-                        "email": "mitali@gmail.com",
-                        "password": "mitali123"
-                    }
+                  "value": {
+                    "email": "mitali@gmail.com",
+                    "password": "mitali123"
+                  }
                 }
-            }
+              }
             }
           }
         }
@@ -167,7 +167,7 @@
         "responses": {
           "200": {
             "description": "user data here"
-          } 
+          }
         },
         "parameters": [
           {
@@ -228,20 +228,20 @@
                   "title": {
                     "type": "string"
                   },
-                  "content":{
+                  "content": {
                     "type": "string"
                   },
-                  "userID":{
-                    "type" :"string"
+                  "userID": {
+                    "type": "string"
                   },
-                  "likes":{
-                    "type" : "number"
+                  "likes": {
+                    "type": "number"
                   },
-                  "dislikes":{
+                  "dislikes": {
                     "type": "number"
                   }
                 },
-                "required":["title","content","userID","likes","dislikes"]
+                "required": ["title", "content", "userID", "likes", "dislikes"]
               }
             }
           }
@@ -263,23 +263,23 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "_id":{
-                    "type":"string"
+                  "_id": {
+                    "type": "string"
                   },
                   "title": {
                     "type": "string"
                   },
-                  "content":{
+                  "content": {
                     "type": "string"
                   },
-                  "likes":{
-                    "type" : "number"
+                  "likes": {
+                    "type": "number"
                   },
-                  "dislikes":{
+                  "dislikes": {
                     "type": "number"
                   }
                 },
-                "required":["_id","userID"]
+                "required": ["_id", "userID"]
               }
             }
           }
@@ -352,7 +352,6 @@
             "description": "Number of items per page"
           }
         ]
-        
       }
     },
     "/comment/InsertComment/{_id}": {
@@ -382,20 +381,26 @@
                   "content": {
                     "type": "string"
                   },
-                  "userID":{
+                  "userID": {
                     "type": "string"
                   },
-                  "blogpostID":{
-                    "type" :"string"
+                  "blogpostID": {
+                    "type": "string"
                   },
-                  "likes":{
-                    "type" : "number"
+                  "likes": {
+                    "type": "number"
                   },
-                  "dislike":{
+                  "dislike": {
                     "type": "number"
                   }
                 },
-                "required":["blogpostID","content","userID","likes","dislikes"]
+                "required": [
+                  "blogpostID",
+                  "content",
+                  "userID",
+                  "likes",
+                  "dislikes"
+                ]
               }
             }
           }
@@ -429,17 +434,17 @@
                   "content": {
                     "type": "string"
                   },
-                  "blogpostID":{
+                  "blogpostID": {
                     "type": "string"
                   },
-                  "likes":{
-                    "type" : "number"
+                  "likes": {
+                    "type": "number"
                   },
-                  "dislike":{
+                  "dislike": {
                     "type": "number"
                   }
                 },
-                "required":["blogpostID","content","likes","dislikes"]
+                "required": ["blogpostID", "content", "likes", "dislikes"]
               }
             }
           }
@@ -473,8 +478,8 @@
                   "_id": {
                     "type": "string"
                   },
-                  "blogpostID":{
-                    "type":"string"
+                  "blogpostID": {
+                    "type": "string"
                   }
                 }
               }
@@ -524,7 +529,6 @@
             "description": "Number of items per page"
           }
         ]
-        
       }
     },
     "components": {

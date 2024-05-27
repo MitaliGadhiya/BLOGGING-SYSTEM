@@ -25,7 +25,7 @@ const blogpostSchema = new Schema<BlogpostInterface>(
       required: true
     },
     isdeleted: {
-      type : Boolean,
+      type: Boolean,
       default: false,
       required: true
     }

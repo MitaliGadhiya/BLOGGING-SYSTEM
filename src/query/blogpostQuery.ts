@@ -1,7 +1,7 @@
-import { BlogpostModel } from '../models';
-import { injectable } from 'inversify';
-import { BlogpostInterface } from '../interface';
-import { PipelineStage } from 'mongoose';
+import { BlogpostModel } from '../models'
+import { injectable } from 'inversify'
+import { BlogpostInterface } from '../interface'
+import { PipelineStage } from 'mongoose'
 
 @injectable()
 export class BlogpostQuery {
@@ -11,7 +11,7 @@ export class BlogpostQuery {
     page: number = 1,
     limit: number = 10
   ): Promise<{ blog: BlogpostInterface[]; total_pages: number }> {
-    const filter: any = {};
+    const filter: any = {}
 
     // Define lookup, unwind, and addFields stages
     const aggregationStages: PipelineStage[] = [
@@ -48,7 +48,7 @@ export class BlogpostQuery {
           dislikes: 1
         }
       }
-    ];
+    ]
 
     // Construct the initial filter based on search criteria
     if (search) {
@@ -58,20 +58,20 @@ export class BlogpostQuery {
         { userName: { $regex: search, $options: 'i' } },
         { userEmail: { $regex: search, $options: 'i' } },
         { userProfile: { $regex: search, $options: 'i' } }
-      ];
+      ]
     }
 
     // Parse and apply additional filters
     if (filters) {
-      const filterPairs = filters.split('&');
+      const filterPairs = filters.split('&')
       filterPairs.forEach(pair => {
-        const [key, value] = pair.split('=');
+        const [key, value] = pair.split('=')
         if (value !== undefined) {
-          filter[key] = value;
+          filter[key] = value
         } else {
-          throw new Error('Invalid key-value pair');
+          throw new Error('Invalid key-value pair')
         }
-      });
+      })
     }
 
     // Add match, skip, and limit stages
@@ -79,15 +79,15 @@ export class BlogpostQuery {
       { $match: filter },
       { $skip: (page - 1) * limit },
       { $limit: limit }
-    );
+    )
 
     // Execute the aggregation pipeline
-    const blog = await BlogpostModel.aggregate(aggregationStages);
+    const blog = await BlogpostModel.aggregate(aggregationStages)
 
     // Count total documents for pagination
-    const totalCount = await BlogpostModel.countDocuments(filter);
-    const total_pages = Math.ceil(totalCount / limit);
+    const totalCount = await BlogpostModel.countDocuments(filter)
+    const total_pages = Math.ceil(totalCount / limit)
 
-    return { blog, total_pages };
+    return { blog, total_pages }
   }
 }
