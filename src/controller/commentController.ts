@@ -1,19 +1,25 @@
 import { CommentServices } from '../services'
 import { NextFunction, Request, Response } from 'express'
-import { controller, httpPost } from 'inversify-express-utils'
+import { controller, httpPost, httpGet } from 'inversify-express-utils'
 import { inject } from 'inversify'
 import { TYPES } from '../utils/types'
 import errorMessage from '../utils/errorHandling'
 import { CommentInterface } from '../interface'
-import { Auth } from '../middleware/auth'
+import { Auth } from '../middleware'
+import { CommentQuery } from '../query'
+import { validateData } from '../middleware'
+
 @controller('/comment')
 export class CommentController {
   private commentService: CommentServices
-  constructor(@inject(TYPES.CommentServices) commentServices: CommentServices) {
+  private commentQuery : CommentQuery
+
+  constructor(@inject(TYPES.CommentServices) commentServices: CommentServices, @inject(TYPES.CommentQuery) commentQuery: CommentQuery) {
     this.commentService = commentServices
+    this.commentQuery = commentQuery
   }
 
-  @httpPost('/InsertComment/:id',Auth)
+  @httpPost('/InsertComment/:id',Auth,validateData)
   async userData(
     req: Request,
     res: Response,
@@ -21,7 +27,6 @@ export class CommentController {
   ): Promise<CommentInterface | object> {
     try {
       const blog: any = req.find;
-      console.log(req.params);
       let  blogpostID : any  = req.params.id;
       const { content, likes, dislike, isdeleted } = req.body;
       const userID = blog._id;
@@ -74,6 +79,32 @@ export class CommentController {
     catch(err){
       console.log(err);
         errorMessage(err,req,res,next)
+    }
+  }
+
+
+  @httpGet('/FindComment',Auth)
+  async findAll(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+        const { filter, search, page = 1, limit = 10 } = req.query
+        const { comment , total_pages } = await this.commentQuery.findAll(
+          filter as string,
+          search as string,
+          +page,
+          +limit
+        )
+        res.json({
+          total_pages,
+          current_page: page,
+          comment
+        })
+    } catch (err) {
+      console.log(err);
+      errorMessage(err, req, res, next)
     }
   }
 

@@ -104,4 +104,9 @@ export class CommentServices {
   }
   
 
+  async findAll(_id: string): Promise<void |object>{
+    const find = await CommentModel.findOne({_id : _id})
+    return find
+  }
+
 }

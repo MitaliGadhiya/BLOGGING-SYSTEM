@@ -7,8 +7,8 @@ import { TYPES } from '../utils/types'
 import errorMessage from '../utils/errorHandling'
 import { UserInterface } from '../interface'
 import { STATUS_CODE, SUCCESS_MESSAGE, NOT_FOUND } from '../utils/constant'
-import { Auth } from '../middleware/auth'
-import { UserModel } from '../models'
+import { Auth } from '../middleware'
+import { validateData } from '../middleware'
 
 @controller('/user')
 export class UserController {
@@ -22,7 +22,7 @@ export class UserController {
     this.userQuery = userQuery
   }
 
-  @httpPost('/InsertData')
+  @httpPost('/InsertData',validateData)
   async userData(
     req: Request,
     res: Response,

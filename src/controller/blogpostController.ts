@@ -5,7 +5,7 @@ import { inject } from 'inversify'
 import { TYPES } from '../utils/types'
 import errorMessage from '../utils/errorHandling'
 import { BlogpostInterface } from '../interface'
-import { Auth } from '../middleware/auth'
+import { Auth, validateData } from '../middleware'
 import { BlogpostQuery } from '../query'
 
 
@@ -23,7 +23,7 @@ export class BlogpostController {
     this.blogpostQuery = BlogpostQuery
   }
 
-  @httpPost('/InsertData', Auth)
+  @httpPost('/InsertData', Auth,validateData)
   async userData(
     req: Request,
     res: Response,
@@ -81,19 +81,13 @@ export class BlogpostController {
   }
 
 
-  @httpGet('/FindBlog/:id',Auth)
+  @httpGet('/FindBlog',Auth)
   async findAll(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
-      const find: any = req.find
-      const { _id } = req.params
-      if (find._id === _id) {
-       const users =  await this.blogpostService.findAll(_id)
-       res.json({users})
-      }else if(find.role === "admin"){
         const { filter, search, page = 1, limit = 10 } = req.query
         const { blog , total_pages } = await this.blogpostQuery.findAll(
           filter as string,
@@ -106,9 +100,6 @@ export class BlogpostController {
           current_page: page,
           blog
         })
-      }else{
-        res.send("Wrong user ID")
-      }
     } catch (err) {
       console.log(err);
       errorMessage(err, req, res, next)

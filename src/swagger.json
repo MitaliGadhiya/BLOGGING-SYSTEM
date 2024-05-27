@@ -272,9 +272,6 @@
                   "content":{
                     "type": "string"
                   },
-                  "userID":{
-                    "type" :"string"
-                  },
                   "likes":{
                     "type" : "number"
                   },
@@ -306,9 +303,6 @@
                 "properties": {
                   "_id": {
                     "type": "string"
-                  },
-                  "userID":{
-                    "type":"string"
                   }
                 }
               }
@@ -317,7 +311,7 @@
         }
       }
     },
-    "/blogpost/FindBlog/{_id}": {
+    "/blogpost/FindBlog": {
       "get": {
         "tags": ["Blog"],
         "summary": "Find blog data",
@@ -328,12 +322,177 @@
         },
         "parameters": [
           {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Filter criteria"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Search keyword"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "default": 1,
+            "description": "Page number for pagination"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "default": 10,
+            "description": "Number of items per page"
+          }
+        ]
+        
+      }
+    },
+    "/comment/InsertComment/{_id}": {
+      "post": {
+        "tags": ["Comment"],
+        "summary": "Insert comment data",
+        "responses": {
+          "200": {
+            "description": "Insert Comment successfully"
+          }
+        },
+        "parameters": [
+          {
             "name": "_id",
             "in": "path",
             "required": true,
             "type": "string",
             "description": "ID criteria"
-          },
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "string"
+                  },
+                  "userID":{
+                    "type": "string"
+                  },
+                  "blogpostID":{
+                    "type" :"string"
+                  },
+                  "likes":{
+                    "type" : "number"
+                  },
+                  "dislike":{
+                    "type": "number"
+                  }
+                },
+                "required":["blogpostID","content","userID","likes","dislikes"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/comment/UpdateComment/{_id}": {
+      "post": {
+        "tags": ["Comment"],
+        "summary": "update comment data",
+        "responses": {
+          "200": {
+            "description": "update Comment successfully"
+          }
+        },
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID criteria"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "string"
+                  },
+                  "blogpostID":{
+                    "type": "string"
+                  },
+                  "likes":{
+                    "type" : "number"
+                  },
+                  "dislike":{
+                    "type": "number"
+                  }
+                },
+                "required":["blogpostID","content","likes","dislikes"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/comment/DeleteComment/{_id}": {
+      "post": {
+        "tags": ["Comment"],
+        "summary": "delete Comment data",
+        "responses": {
+          "200": {
+            "description": "user successfully comment data Deleted"
+          }
+        },
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID criteria"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string"
+                  },
+                  "blogpostID":{
+                    "type":"string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/comment/FindComment": {
+      "get": {
+        "tags": ["Comment"],
+        "summary": "Find comment data",
+        "responses": {
+          "200": {
+            "description": "user successfully find comment data"
+          }
+        },
+        "parameters": [
           {
             "name": "filter",
             "in": "query",
