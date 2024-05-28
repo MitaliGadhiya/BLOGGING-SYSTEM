@@ -22,7 +22,7 @@ export class CommentController {
     this.commentQuery = commentQuery
   }
 
-  @httpPost('/InsertComment/:id', Auth, validateData)
+  @httpPost('/insert-comment/:id', Auth, validateData)
   async userData(
     req: Request,
     res: Response,
@@ -49,7 +49,7 @@ export class CommentController {
     }
   }
 
-  @httpPost('/UpdateComment/:id', Auth)
+  @httpPost('/update-comment/:id', Auth)
   async updateComment(
     req: Request,
     res: Response,
@@ -73,7 +73,7 @@ export class CommentController {
     }
   }
 
-  @httpPost('/DeleteComment/:id', Auth)
+  @httpPost('/delete-comment/:id', Auth)
   async deleteBlog(req: Request, res: Response, next: NextFunction) {
     try {
       const delete1: any = req.find
@@ -92,7 +92,7 @@ export class CommentController {
     }
   }
 
-  @httpGet('/FindComment', Auth)
+  @httpGet('/find-comment', Auth)
   async findAll(
     req: Request,
     res: Response,

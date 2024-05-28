@@ -1,6 +1,7 @@
 import { BlogpostInterface, UserInterface } from '../interface'
 import { BlogpostModel, UserModel } from '../models'
 import { injectable } from 'inversify'
+import puppeteer from 'puppeteer'
 
 @injectable()
 export class BlogpostServices {
@@ -69,5 +70,81 @@ export class BlogpostServices {
   async findAll(_id: string): Promise<void | object> {
     const find = await BlogpostModel.findOne({ _id: _id })
     return find
+  }
+
+  async generatePdf():Promise<any> {
+    const users = await BlogpostModel.find();
+  
+    const browser = await puppeteer.launch({
+      headless: true, // run in headless mode
+      args: ['--no-sandbox', '--disable-setuid-sandbox'] // necessary for some environments
+    });
+    const page = await browser.newPage();
+  
+    // Generate HTML content
+    let content = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>User Data</title>
+          <style>
+            table {
+              width: 100%;
+              border-collapse: collapse;
+            }
+            table, th, td {
+              border: 1px solid black;
+            }
+            th, td {
+              padding: 10px;
+              text-align: left;
+            }
+          </style>
+        </head>
+        <body>
+          <h1>User Data</h1>
+          <table>
+            <thead>
+              <tr>
+                <th>BLOGID</th>
+                <th>title</th>
+                <th>content</th>
+                <th>userID</th>
+                <th>likes</th>
+                <th>dislikes</th>
+              </tr>
+            </thead>
+            <tbody>
+    `;
+  
+    users.forEach(user => {
+      content += `
+        <tr>
+          <td>${user._id}</td>
+          <td>${user.title}</td>
+          <td>${user.content}</td>
+          <td>${user.userID}</td>
+          <td>${user.likes}</td>
+          <td>${user.dislikes}</td>
+        </tr>
+      `;
+    });
+  
+    content += `
+            </tbody>
+          </table>
+        </body>
+      </html>
+    `;
+  
+    await page.setContent(content, { waitUntil: 'networkidle0' });
+  
+    await page.pdf({
+      path: 'users.pdf',
+      format: 'A4',
+      printBackground: true,
+    });
+  
+    await browser.close();
   }
 }

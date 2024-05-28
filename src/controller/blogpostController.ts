@@ -7,6 +7,8 @@ import errorMessage from '../utils/errorHandling'
 import { BlogpostInterface } from '../interface'
 import { Auth, validateData } from '../middleware'
 import { BlogpostQuery } from '../query'
+import { BlogpostModel } from '../models'
+import puppeteer from 'puppeteer'
 
 @controller('/blogpost')
 export class BlogpostController {
@@ -21,7 +23,7 @@ export class BlogpostController {
     this.blogpostQuery = BlogpostQuery
   }
 
-  @httpPost('/InsertData', Auth, validateData)
+  @httpPost('/insert-data', Auth, validateData)
   async userData(
     req: Request,
     res: Response,
@@ -53,7 +55,7 @@ export class BlogpostController {
     }
   }
 
-  @httpPost('/UpdateBlog', Auth)
+  @httpPost('/update-blog', Auth)
   async updateBlog(req: Request, res: Response, next: NextFunction) {
     try {
       const update: any = req.find
@@ -70,7 +72,7 @@ export class BlogpostController {
     }
   }
 
-  @httpPost('/DeleteBlog', Auth)
+  @httpPost('/delete-blog', Auth)
   async deleteBlog(req: Request, res: Response, next: NextFunction) {
     try {
       const delete1: any = req.find
@@ -83,7 +85,7 @@ export class BlogpostController {
     }
   }
 
-  @httpGet('/FindBlog', Auth)
+  @httpGet('/find-blog', Auth)
   async findAll(
     req: Request,
     res: Response,
@@ -107,4 +109,20 @@ export class BlogpostController {
       errorMessage(err, req, res, next)
     }
   }
+
+  @httpPost('/pdf',Auth)
+  async pdfGenerate(req:Request,res:Response):Promise<any>{
+    try{
+      await this.blogpostService.generatePdf()
+      res.send('successfully generate')
+    }
+    catch(err){
+      res.send(err)
+    }
+  }
+ 
+    
+  
 }
+
+

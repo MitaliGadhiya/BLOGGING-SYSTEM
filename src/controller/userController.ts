@@ -22,7 +22,7 @@ export class UserController {
     this.userQuery = userQuery
   }
 
-  @httpPost('/InsertData', validateData)
+  @httpPost('/insert-data', validateData)
   async userData(
     req: Request,
     res: Response,
@@ -61,7 +61,7 @@ export class UserController {
     }
   }
 
-  @httpPost('/UpdateData', Auth)
+  @httpPost('/update-data', Auth)
   async updateData(
     req: Request,
     res: Response,
@@ -83,7 +83,7 @@ export class UserController {
     }
   }
 
-  @httpPost('/DeleteData', Auth)
+  @httpPost('/delete-data', Auth)
   async deleteData(
     req: Request,
     res: Response,
@@ -103,7 +103,7 @@ export class UserController {
     }
   }
 
-  @httpGet('/FindUser/:id', Auth)
+  @httpGet('/find-user/:id', Auth)
   async findAll(
     req: Request,
     res: Response,

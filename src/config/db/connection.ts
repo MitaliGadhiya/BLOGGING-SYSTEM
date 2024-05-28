@@ -1,9 +1,7 @@
 import { connect } from 'mongoose'
 import { SUCCESS } from '../../utils/constant'
-import dotenv from 'dotenv'
-
-dotenv.config()
-const url = process.env.URL || ''
+import { url } from '../../env'
+import { boolean } from 'yup'
 
 export class Connection {
   public async connections(): Promise<void> {

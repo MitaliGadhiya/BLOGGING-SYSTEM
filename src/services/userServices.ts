@@ -2,10 +2,7 @@ import { UserInterface } from '../interface'
 import { UserModel } from '../models'
 import jwt from 'jsonwebtoken'
 import { injectable } from 'inversify'
-import dotenv from 'dotenv'
-
-dotenv.config()
-const secretkey = process.env.SECRETKEY || ''
+import { secretkey } from '../env'
 
 @injectable()
 export class UserServices {
