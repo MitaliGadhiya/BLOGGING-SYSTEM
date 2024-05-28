@@ -4,7 +4,7 @@ import { Connection } from './config/db/connection';
 import cookieParser from 'cookie-parser';
 import { InversifyExpressServer } from 'inversify-express-utils';
 import container from './config/inversyfi.config';
-import { port } from './env';
+import { port, apiKey } from './env';
 import cors from 'cors';
 import axios from 'axios';
 import swaggerUi from 'swagger-ui-express'
@@ -46,7 +46,7 @@ server.setConfig(app => {
 });
 
 
-const client = new PostmanClient('PMAK-66555fe673c7e100019185a2-78149b66e96332cd7f0072ddfd07415447');
+const client = new PostmanClient(apiKey);
 client.getCollections()
   .catch(error => {
     console.error(error.message);
